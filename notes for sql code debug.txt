@@ -1,0 +1,4 @@
+the quotation mark was wrong fixed
+has_achievement only need aid as the primary key fixed
+typo in Buys_Game   fixed
+debugging insert
