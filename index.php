@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<?php
+session_save_path('./savepath/');
+session_start();
+
+?>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -43,7 +47,7 @@
             </div>
             <div class="collapse navbar-collapse" id="#bs-navbar">
                 <ul class="nav navbar-nav">
-                    <li> <a href="#">Link</a></li>
+                    <li> <a href="homepage.php">Homepage</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -143,10 +147,22 @@ function executeBoundSQL($cmdstr, $list) {
 function printResult($result) { //prints results from a select statement
 	echo "<br>Got data from table tab1:<br>";
 	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th></tr>";
+	echo "<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>PW</th>
+			<th>BD</th>
+			<th>Email</th>
+			</tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr>
+		<td>" . $row[0] . "</td>
+		<td>" . $row[1] . "</td>
+		<td>" . $row[2] . "</td>
+		<td>" . $row[3] . "</td>
+		<td>" . $row[4] . "</td>
+		</tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
 
@@ -159,15 +175,26 @@ if ($db_conn) {
         $password = $_POST['password'];
         $result = executePlainSQL("select * from player where name='$username' and password='$password'");
         $row = OCI_Fetch_Array($result, OCI_BOTH);
-        if ($row != NULL) {
+		if ($row != NULL){
+			$_SESSION['CurrentUser'] = $username;
+
             echo "Welcome $row[1]!!";
-        } else {
-            echo "Login Failed.";
-        }
+			
+			$result = executePlainSQL("select * from player");
+			printResult($result);
+		} else {
+			echo "Login Failed.";		
+		}
     } else {
 		// Select data...
-		$result = executePlainSQL("select * from player");
-		printResult($result);
+		if (isset($_SESSION['CurrentUser'])) {
+			echo "Welcome back" . $_SESSION['CurrentUser'] . ". This is a test page.";
+			$result = executePlainSQL("select * from player");
+			printResult($result);
+		} else {
+			echo "You have not logged in. Something's wrong if you have logged in and still see this page.";
+		}
+		
 
 	//Commit to save changes...
     }
