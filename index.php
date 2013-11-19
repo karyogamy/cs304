@@ -49,7 +49,14 @@ session_start();
                 <ul class="nav navbar-nav">
                     <li> <a href="homepage.php">Homepage</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+							<li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                        </ul>
+                    </li>
+					<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Link</a></li>
                             <li><a href="#">Link</a></li>
@@ -174,13 +181,26 @@ if ($db_conn) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $result = executePlainSQL("select * from player where name='$username' and password='$password'");
-        $row = OCI_Fetch_Array($result, OCI_BOTH);
-		if ($row != NULL){
+        $rowPlayer = OCI_Fetch_Array($result, OCI_BOTH);
+		$result = executePlainSQL("select * from company where name='$username' and password='$password'");
+        $rowCompany = OCI_Fetch_Array($result, OCI_BOTH);
+		
+		if ($rowPlayer != NULL){
 			$_SESSION['CurrentUser'] = $username;
-
-            echo "Welcome $row[1]!!";
+			$_SESSION['PrivLevel'] = 0;
+			
+            echo "Welcome $rowPlayer[1]!!";
+			
+		} else if ($rowCompany != NULL){
+			$_SESSION['CurrentUser'] = $username;
+			$_SESSION['PrivLevel'] = 9001;
+			
+            echo "Welcome $rowCompany[1]!!";
 			
 			$result = executePlainSQL("select * from player");
+			printResult($result);
+			
+			$result = executePlainSQL("select * from company");
 			printResult($result);
 		} else {
 			echo "Login Failed.";		

@@ -4,7 +4,7 @@ CREATE TABLE Player	(
 	password 		CHAR(20),
 	joindate 		DATE,  
 	email 			VARCHAR(30),
-	balance 		INTEGER,
+	balance 		NUMBER CHECK (balance >= 0),
 	bday 			DATE, 
 	gamept 		INTEGER,
 	PRIMARY KEY	(id),
@@ -23,7 +23,7 @@ CREATE TABLE Company (
 
 CREATE TABLE Game	(
     Hours_played 	INTEGER,
-    Price 			INTEGER,
+    Price 			NUMBER CHECK (Price >= 0),
 	Name 			VARCHAR(50),
    	gid 			INTEGER,
    	id 				INTEGER,
@@ -45,7 +45,7 @@ CREATE TABLE Giftcard 	(
 	
 CREATE TABLE Has_Achievement 	(
 	aid 			INTEGER,
-	points 			INTEGER,
+	points 			INTEGER CHECK (points >= 0),
 	name 			VARCHAR(20),
 	gid 			INTEGER,
 	PRIMARY KEY	(aid),
