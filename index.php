@@ -35,6 +35,25 @@ session_start();
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="logoutmodal" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="logoutLabel">
+                            <h2>Logout</h2>
+                        </div>  
+                        <div class="modal-body">
+                            <form role="form" method="POST" action="index.php">
+                                <div class="form-group">
+                                    <h3> Do you want to logout?</h3>
+                                </div>
+                                <button type="submit" class="btn btn-default" name="logout">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar">
@@ -64,7 +83,17 @@ session_start();
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" data-toggle="modal" data-target="#loginmodal">Sign In</a></li>
+                    <li>
+                        <?php
+                            if (isset($_SESSION['CurrentUser'])) {
+                               
+                                echo '<a href="#" data-toggle="modal" data-target="#logoutmodal">Sign Out</a></li>';
+ 
+                            } else {
+                                echo '<a href="#" data-toggle="modal" data-target="#loginmodal">Sign In</a></li>';
+                            }
+
+                        ?>
                 </ul>
             </div>
         </nav>
@@ -190,6 +219,7 @@ if ($db_conn) {
 			$_SESSION['PrivLevel'] = 0;
 			
             echo "Welcome $rowPlayer[1]!!";
+            echo '<script type="text/javascript">window.location.reload()</script>';
 			
 		} else if ($rowCompany != NULL){
 			$_SESSION['CurrentUser'] = $username;
@@ -202,9 +232,13 @@ if ($db_conn) {
 			
 			$result = executePlainSQL("select * from company");
 			printResult($result);
+            echo '<script type="text/javascript">window.location.reload()</script>';
 		} else {
 			echo "Login Failed.";		
 		}
+    } else if (array_key_exists('logout', $_POST)) {
+        session_destroy();
+        echo '<script type="text/javascript">window.location.reload()</script>';
     } else {
 		// Select data...
 		if (isset($_SESSION['CurrentUser'])) {
