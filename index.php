@@ -1,8 +1,8 @@
 <?php
 session_save_path('./savepath/');
 session_start();
-
 ?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -67,20 +67,6 @@ session_start();
             <div class="collapse navbar-collapse" id="#bs-navbar">
                 <ul class="nav navbar-nav">
                     <li> <a href="homepage.php">Homepage</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-							<li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </li>
-					<li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -216,6 +202,7 @@ if ($db_conn) {
 		
 		if ($rowPlayer != NULL){
 			$_SESSION['CurrentUser'] = $username;
+			$_SESSION['UserData'] = $rowPlayer;
 			$_SESSION['PrivLevel'] = 0;
 			
             echo "Welcome $rowPlayer[1]!!";
@@ -223,6 +210,7 @@ if ($db_conn) {
 			
 		} else if ($rowCompany != NULL){
 			$_SESSION['CurrentUser'] = $username;
+			$_SESSION['UserData'] = $rowCompany;
 			$_SESSION['PrivLevel'] = 9001;
 			
             echo "Welcome $rowCompany[1]!!";
@@ -242,9 +230,7 @@ if ($db_conn) {
     } else {
 		// Select data...
 		if (isset($_SESSION['CurrentUser'])) {
-			echo "Welcome back" . $_SESSION['CurrentUser'] . ". This is a test page.";
-			$result = executePlainSQL("select * from player");
-			printResult($result);
+			echo "Welcome back" . $_SESSION['CurrentUser'] . ". Privilege level: " . $_SESSION['PrivLevel'];
 		} else {
 			echo "You have not logged in. Something's wrong if you have logged in and still see this page.";
 		}

@@ -99,7 +99,7 @@ CREATE TABLE Wants 	(
 CREATE TABLE Ranks	(
 	id			INTEGER,
 	gid 			INTEGER,
-	prank 			INTEGER,
+	prank 			INTEGER CHECK (prank <= 10),
 	PRIMARY KEY	(id, gid),
 	FOREIGN KEY 	(id) REFERENCES Player,
 	FOREIGN KEY 	(gid) REFERENCES Game);	
@@ -110,3 +110,8 @@ CREATE TABLE Favorite 	(
 	PRIMARY KEY 	(id, gid),
 	FOREIGN KEY 	(id) REFERENCES Player (id),
 	FOREIGN KEY 	(gid) REFERENCES Game);
+
+CREATE VIEW	game_avg AS
+SELECT	gid, AVG(prank) AS arank
+FROM 		Ranks r
+GROUP BY	gid;
