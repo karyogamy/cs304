@@ -231,6 +231,8 @@ if ($db_conn) {
 		// Select data...
 		if (isset($_SESSION['CurrentUser'])) {
 			echo "Welcome back" . $_SESSION['CurrentUser'] . ". Privilege level: " . $_SESSION['PrivLevel'];
+			echo "Redirecting to homepage.";
+			header("Refresh: 1; url=homepage.php");
 		} else {
 			echo "You have not logged in. Something's wrong if you have logged in and still see this page.";
 		}

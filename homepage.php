@@ -16,7 +16,7 @@ session_start();
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-title" id="logoutLabel">
-                            <h2>Logout</h2>
+                            <h3>Logout</h3>
                         </div>  
                         <div class="modal-body">
                             <form role="form" method="POST" action="index.php">
@@ -68,8 +68,329 @@ session_start();
             <div class="row">
                <h1>cs304</h1>
             </div>
+            <div id="result">
+                <h3> Results: </h3>
+                <p class="well">
+                <?php
+
+                $success = True; //keep track of errors so it redirects the page only if there are no errors
+                $db_conn = OCILogon("ora_y5q8", "a10733129", "ug");
+
+                function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+                    //echo "<br>running ".$cmdstr."<br>";
+                    global $db_conn, $success;
+                    $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
+
+                    if (!$statement) {
+                        echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+                        $e = OCI_Error($db_conn); // For OCIParse errors pass the       
+                        // connection handle
+                        echo htmlentities($e['message']);
+                        $success = False;
+                    }
+
+                    $r = OCIExecute($statement, OCI_DEFAULT);
+                    if (!$r) {
+                        echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+                        $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+                        echo htmlentities($e['message']);
+                        $success = False;
+                        return false;
+                    } else {
+
+                    }
+                    return $statement;
+
+                }
+
+
+                function printGameResult($result) { //prints results from a select statement
+                    echo "<br>GAME FILTERED:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Genre</th>
+                            <th>IGNScore</th>
+                            </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[2] . "</td>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[5] . "</td>
+                        <td>" . $row[6] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printRankResult($result) { //prints results from a select statement
+                    echo "<br>GAME RANKINGS:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                            <th>Rank</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[1] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printAchiResult($result) { //prints results from a select statement
+                    echo "<br>MY ACHIEVEMENTS:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                            <th>Points</th>
+                            <th>Game</th>
+                            </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[2] . "</td>
+                        <td>" . $row[3] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printRecResult($result) { //prints results from a select statement
+                    echo "<br>MY TRANSACTION RECORDS:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Transaction Type</th>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Transaction Amount</th>
+                            </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[2] . "</td>
+                        <td>" . $row[3] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printFriendResult($result) { //prints results from a select statement
+                    echo "<br>FRIENDS:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printMWishResult($result) { //prints results from a select statement
+                    echo "<br>I WANT THESE:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printOWishResult($result) { //prints results from a select statement
+                    echo "<br>MY FRIENDS WANTS THESE:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                            <th>Game</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[3] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printSavesResult($result) { //prints results from a select statement
+                    echo "<br>ALL SAVES ON SERVER:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Save ID</th>
+                            <th>Save State</th>
+                            <th>Game</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[2] . "</td>
+                        <td>" . $row[3] . "</td>
+                        <td>" . $row[4] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+
+                function printLoRatResult($result) { //prints results from a select statement
+                    echo "<br>LO Rating is:<br>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                }
+
+                if ($db_conn) {
+                    if(isset($_SESSION['CurrentUser'])){
+                        if ($_SESSION['PrivLevel'] < 9000) {
+                            
+                            $userData = $_SESSION['UserData'];
+                            
+                            if (array_key_exists('filter', $_POST)) {
+                                $name = $_POST['name'];
+                                $cat  = $_POST['cat'];
+                                $ratF = $_POST['ratFromIncl'];
+                                $ratT = $_POST['ratToIncl'];
+                                $priF = $_POST['priFromIncl'];
+                                $priT = $_POST['priToIncl'];		
+                                
+                                $whereQ = "";
+                                if ($name == NULL)
+                                    $name = '%';
+                                else
+                                    $name = '%' . $name . '%';
+                                    
+                                if ($cat == NULL)
+                                    $cat = '%';
+                                else
+                                    $cat = '%' . $cat . '%';	
+
+                                if ($ratF == NULL)
+                                    $ratF = 0;
+                                    
+                                if ($ratT == NULL)
+                                    $ratT = 99999999999;				
+                                
+                                if ($priF == NULL)
+                                    $priF = 0;
+                                    
+                                if ($priT == NULL)
+                                    $priT = 99999999999;	
+
+                                $result = executePlainSQL("select * from game where name LIKE '$name' 
+                                                            and genre LIKE '$cat' and ignscore >= $ratF 
+                                                            and ignscore <= $ratT and price >= $priF 
+                                                            and price <= $priT");													
+                                printGameResult($result);
+                            } else if (array_key_exists('rank', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT	g.name, ga.arank
+                                                            FROM		game g, game_avg ga
+                                                            WHERE		g.gid = ga.gid
+                                                            ORDER BY	ga.arank DESC");													
+                                printRankResult($result);
+                            } else if (array_key_exists('achi', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT	e.aid, h.name, h.points, g.name
+                                                            FROM		Has_Achievement h, Earns e, Game g
+                                                            WHERE		e.id = $userData[0] AND e.aid = h.aid AND h.gid = g.gid");													
+                                printAchiResult($result);
+                            } else if (array_key_exists('transRec', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT	'Game Card Received' AS Type, gc1.cid AS ID, 'Card', gc1.amount AS Price
+                                                            FROM		giftcard gc1
+                                                            WHERE		gc1.rid = $userData[0]
+                                                            UNION
+                                                            SELECT DISTINCT	'Game Card Bought', gc2.cid, 'Card', gc2.amount
+                                                            FROM		giftcard gc2
+                                                            WHERE		gc2.buyer_id = $userData[0]
+                                                            UNION
+                                                            SELECT DISTINCT	'Game Bought', g.gid, g.name, g.price
+                                                            FROM		game g, buys_game b
+                                                            WHERE		b.id = $userData[0] AND g.gid = b.gid");													
+                                printRecResult($result);
+                            } else if (array_key_exists('friends', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT f.id2 AS PID, p.name
+                                                            FROM		friends f, player p
+                                                            WHERE		f.id1 = $userData[0] AND f.id2 <> $userData[0] and p.id = f.id2");													
+                                printFriendResult($result);
+                            } else if (array_key_exists('friendswants', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT p.id AS playerid, p.name as playername, g.id as wantgameid, g.name as wantgamename
+                                                            FROM		friends f, player p, game g, wants w
+                                                            WHERE		f.id1 = $userData[0] AND f.id2 <> $userData[0] AND p.id = f.id2 AND w.id = p.id AND g.gid = w.gid");													
+                                printOWishResult($result);
+                            } else if (array_key_exists('wants', $_POST)) {
+                                $result = executePlainSQL("	SELECT DISTINCT g.gid AS gid, g.name AS name
+                                                            FROM		wants w, game g
+                                                            WHERE		w.id = $userData[0] AND g.gid = w.gid");													
+                                printMWishResult($result);
+                            } else if (array_key_exists('minPop', $_POST)) {
+                                $result = executePlainSQL("	SELECT 		MIN (ranking) AS minratedgame
+                                                            FROM 		(	SELECT 	AVG(prank) AS ranking
+                                                                        FROM	ranks r
+                                                                        GROUP BY gid)");													
+                                printHiRatResult($result);
+                            } else if (array_key_exists('saves', $_POST)) {
+                                $result = executePlainSQL("	SELECT		p.id, p.name as playername, s.sid as saveid, s.state, g.name as gamename, g.genre
+                                                            FROM 		player p
+                                                            INNER JOIN	save_store s ON s.id = p.id
+                                                            INNER JOIN	game g ON g.gid = s.gid");													
+                                printSavesResult($result);
+                            } else if (array_key_exists('buyGame', $_POST)) {
+                                $id = $_POST['id'];
+                                $idRes = executePlainSQL("SELECT * FROM game g WHERE g.gid = $id");
+                                $idRow = OCI_Fetch_Array($idRes, OCI_BOTH);;
+                                if (!($idRow[0] == NULL)) {
+                                    $result1 = executePlainSQL("UPDATE player
+                                                                SET balance = balance - $idRow[0]
+                                                                WHERE id = $userData[0]");
+                                    if (!($result1 === false)) {
+                                        $result2 = executePlainSQL("INSERT INTO buys_game VALUES ($userData[0], $id)");
+                                        if ($result2 === false) {
+                                            echo "Purchase failed, returning your money";
+                                            executePlainSQL("	UPDATE player
+                                                                SET balance = balance + $idRow[0]
+                                                                WHERE id = $userData[0]"); 
+                                        } else {
+                                            echo "Purchase successful.";
+                                        }
+                                    }	
+                                } else {
+                                    echo "game not found";
+                                    }
+                            }
+                        } else {
+                            echo "You are been redirected to Company page.";
+                            header("Refresh: 0; url=company.php");	
+                        }
+                    } else {
+                            echo "you have not logged in, redirecting in 2 secs";
+                    }
+                } else {
+                            echo "cannot connect";
+                            $e = OCI_Error(); // For OCILogon errors pass no handle
+                            echo htmlentities($e['message']);
+                }
+                ?>
+                </p>
+            </div>
 			<div class="row">
-               <h2>FILTER</h2>
+               <h3>FILTER</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -95,7 +416,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>BUY GAME</h2>
+               <h3>BUY GAME</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -106,7 +427,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>RANK GAMES</h2>
+               <h3>RANK GAMES</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -116,7 +437,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>VIEW ACHIEVEMENTS</h2>
+               <h3>VIEW ACHIEVEMENTS</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -126,7 +447,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>TRANSACTION RECORDS</h2>
+               <h3>TRANSACTION RECORDS</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -136,7 +457,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>MY FRIENDS</h2>
+               <h3>MY FRIENDS</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -146,7 +467,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>MY FRIENDS' WISHLISTS</h2>
+               <h3>MY FRIENDS' WISHLISTS</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -156,7 +477,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>MY WISHLIST</h2>
+               <h3>MY WISHLIST</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -166,7 +487,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>LOWEST RATING OF A GAME</h2>
+               <h3>LOWEST RATING OF A GAME</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -176,7 +497,7 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h2>ALL SAVED GAMES</h2>
+               <h3>ALL SAVED GAMES</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -190,319 +511,4 @@ session_start();
 </html>
 
 
-<?php
 
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_y5q8", "a10733129", "ug");
-
-function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
-	//echo "<br>running ".$cmdstr."<br>";
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
-
-	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
-		// connection handle
-		echo htmlentities($e['message']);
-		$success = False;
-	}
-
-	$r = OCIExecute($statement, OCI_DEFAULT);
-	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
-		$success = False;
-		return false;
-	} else {
-
-	}
-	return $statement;
-
-}
-
-
-function printGameResult($result) { //prints results from a select statement
-	echo "<br>GAME FILTERED:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-			<th>Price</th>
-			<th>Genre</th>
-			<th>IGNScore</th>
-			</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[2] . "</td>
-		<td>" . $row[1] . "</td>
-		<td>" . $row[5] . "</td>
-		<td>" . $row[6] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printRankResult($result) { //prints results from a select statement
-	echo "<br>GAME RANKINGS:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-			<th>Rank</th>
-		</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[0] . "</td>
-		<td>" . $row[1] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printAchiResult($result) { //prints results from a select statement
-	echo "<br>MY ACHIEVEMENTS:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-			<th>Points</th>
-			<th>Game</th>
-			</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[1] . "</td>
-		<td>" . $row[2] . "</td>
-		<td>" . $row[3] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printRecResult($result) { //prints results from a select statement
-	echo "<br>MY TRANSACTION RECORDS:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Transaction Type</th>
-			<th>Item ID</th>
-			<th>Item Name</th>
-			<th>Transaction Amount</th>
-			</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[0] . "</td>
-		<td>" . $row[1] . "</td>
-		<td>" . $row[2] . "</td>
-		<td>" . $row[3] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printFriendResult($result) { //prints results from a select statement
-	echo "<br>FRIENDS:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-		</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[1] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printMWishResult($result) { //prints results from a select statement
-	echo "<br>I WANT THESE:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-		</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[1] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printOWishResult($result) { //prints results from a select statement
-	echo "<br>MY FRIENDS WANTS THESE:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Name</th>
-			<th>Game</th>
-		</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[1] . "</td>
-		<td>" . $row[3] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printSavesResult($result) { //prints results from a select statement
-	echo "<br>ALL SAVES ON SERVER:<br>";
-	echo "<table>";
-	echo "<tr>
-			<th>Save ID</th>
-			<th>Save State</th>
-			<th>Game</th>
-		</tr>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[2] . "</td>
-		<td>" . $row[3] . "</td>
-		<td>" . $row[4] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-}
-
-function printLoRatResult($result) { //prints results from a select statement
-	echo "<br>LO Rating is:<br>";
-
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr>
-		<td>" . $row[0] . "</td>
-		</tr>"; //or just use "echo $row[0]" 
-	}
-}
-
-if ($db_conn) {
-	if(isset($_SESSION['CurrentUser'])){
-		if ($_SESSION['PrivLevel'] < 9000) {
-			
-			$userData = $_SESSION['UserData'];
-			
-			if (array_key_exists('filter', $_POST)) {
-				$name = $_POST['name'];
-				$cat  = $_POST['cat'];
-				$ratF = $_POST['ratFromIncl'];
-				$ratT = $_POST['ratToIncl'];
-				$priF = $_POST['priFromIncl'];
-				$priT = $_POST['priToIncl'];		
-				
-				$whereQ = "";
-				if ($name == NULL)
-					$name = '%';
-				else
-					$name = '%' . $name . '%';
-					
-				if ($cat == NULL)
-					$cat = '%';
-				else
-					$cat = '%' . $cat . '%';	
-
-				if ($ratF == NULL)
-					$ratF = 0;
-					
-				if ($ratT == NULL)
-					$ratT = 99999999999;				
-				
-				if ($priF == NULL)
-					$priF = 0;
-					
-				if ($priT == NULL)
-					$priT = 99999999999;	
-
-				$result = executePlainSQL("select * from game where name LIKE '$name' 
-											and genre LIKE '$cat' and ignscore >= $ratF 
-											and ignscore <= $ratT and price >= $priF 
-											and price <= $priT");													
-				printGameResult($result);
-			} else if (array_key_exists('rank', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT	g.name, ga.arank
-											FROM		game g, game_avg ga
-											WHERE		g.gid = ga.gid
-											ORDER BY	ga.arank DESC");													
-				printRankResult($result);
-			} else if (array_key_exists('achi', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT	e.aid, h.name, h.points, g.name
-											FROM		Has_Achievement h, Earns e, Game g
-											WHERE		e.id = $userData[0] AND e.aid = h.aid AND h.gid = g.gid");													
-				printAchiResult($result);
-			} else if (array_key_exists('transRec', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT	'Game Card Received' AS Type, gc1.cid AS ID, 'Card', gc1.amount AS Price
-											FROM		giftcard gc1
-											WHERE		gc1.rid = $userData[0]
-											UNION
-											SELECT DISTINCT	'Game Card Bought', gc2.cid, 'Card', gc2.amount
-											FROM		giftcard gc2
-											WHERE		gc2.buyer_id = $userData[0]
-											UNION
-											SELECT DISTINCT	'Game Bought', g.gid, g.name, g.price
-											FROM		game g, buys_game b
-											WHERE		b.id = $userData[0] AND g.gid = b.gid");													
-				printRecResult($result);
-			} else if (array_key_exists('friends', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT f.id2 AS PID, p.name
-											FROM		friends f, player p
-											WHERE		f.id1 = $userData[0] AND f.id2 <> $userData[0] and p.id = f.id2");													
-				printFriendResult($result);
-			} else if (array_key_exists('friendswants', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT p.id AS playerid, p.name as playername, g.id as wantgameid, g.name as wantgamename
-											FROM		friends f, player p, game g, wants w
-											WHERE		f.id1 = $userData[0] AND f.id2 <> $userData[0] AND p.id = f.id2 AND w.id = p.id AND g.gid = w.gid");													
-				printOWishResult($result);
-			} else if (array_key_exists('wants', $_POST)) {
-				$result = executePlainSQL("	SELECT DISTINCT g.gid AS gid, g.name AS name
-											FROM		wants w, game g
-											WHERE		w.id = $userData[0] AND g.gid = w.gid");													
-				printMWishResult($result);
-			} else if (array_key_exists('minPop', $_POST)) {
-				$result = executePlainSQL("	SELECT 		MIN (ranking) AS minratedgame
-											FROM 		(	SELECT 	AVG(prank) AS ranking
-														FROM	ranks r
-														GROUP BY gid)");													
-				printHiRatResult($result);
-			} else if (array_key_exists('saves', $_POST)) {
-				$result = executePlainSQL("	SELECT		p.id, p.name as playername, s.sid as saveid, s.state, g.name as gamename, g.genre
-											FROM 		player p
-											INNER JOIN	save_store s ON s.id = p.id
-											INNER JOIN	game g ON g.gid = s.gid");													
-				printSavesResult($result);
-			} else if (array_key_exists('buyGame', $_POST)) {
-				$id = $_POST['id'];
-				$idRes = executePlainSQL("SELECT * FROM game g WHERE g.gid = $id");
-				$idRow = OCI_Fetch_Array($idRes, OCI_BOTH);;
-				if (!($idRow[0] == NULL)) {
-					$result1 = executePlainSQL("UPDATE player
-												SET balance = balance - $idRow[0]
-												WHERE id = $userData[0]");
-					if (!($result1 === false)) {
-						$result2 = executePlainSQL("INSERT INTO buys_game VALUES ($userData[0], $id)");
-						if ($result2 === false) {
-							echo "Purchase failed, returning your money";
-							executePlainSQL("	UPDATE player
-												SET balance = balance + $idRow[0]
-												WHERE id = $userData[0]"); 
-						} else {
-							echo "Purchase successful.";
-						}
-					}	
-				} else {
-					echo "game not found";
-					}
-			}
-		} else {
-			echo "You are been redirected to Company page.";
-			header("Refresh: 0; url=company.php");	
-		}
-	} else {
-			echo "you have not logged in, redirecting in 2 secs";
-	}
-} else {
-			echo "cannot connect";
-			$e = OCI_Error(); // For OCILogon errors pass no handle
-			echo htmlentities($e['message']);
-}
-?>
