@@ -170,21 +170,6 @@ include 'globalfunc.php';
                     echo "</table>";
                 }
 
-                function printMWishResult($result) { //prints results from a select statement
-                    echo "<br>I WANT THESE:<br>";
-                    echo '<table class="table">';
-                    echo "<tr>
-                            <th>Name</th>
-                        </tr>";
-
-                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                        echo "<tr>
-                        <td>" . $row[1] . "</td>
-                        </tr>"; //or just use "echo $row[0]" 
-                    }
-                    echo "</table>";
-                }
-
                 function printOWishResult($result) { //prints results from a select statement
                     echo "<br>MY FRIENDS WANTS THESE:<br>";
                     echo '<table class="table">';
@@ -202,6 +187,32 @@ include 'globalfunc.php';
                     echo "</table>";
                 }
 
+				
+                function printMWishResult($result) { //prints results from a select statement
+                    echo "<br>I WANT THESE:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Game</th>
+                            <th>Genre</th>
+                            <th>IGN Score</th>
+                            <th>Price</th>
+							<th></th>
+                          </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[3] . "</td>
+                        <td>" . $row[4] . "</td>
+                        <td>" . $row[2] . "</td>
+                        <td><form action='homepage.php' method='post'>
+                        <input type='hidden' name='id' value='" . $row[0] . "'>
+                        <input type='submit' class='btn btn-default' name='deleteWishItem' value='Delete'></form></td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+				
                 function printSavesResult($result) { //prints results from a select statement
                     echo "<br>ALL SAVES ON SERVER:<br>";
                     echo '<table class="table">';
@@ -349,11 +360,21 @@ include 'globalfunc.php';
                                                             WHERE		f.id1 = $userData[0] AND f.id2 <> $userData[0] AND p.id = f.id2 AND w.id = p.id AND g.gid = w.gid");													
                                 printOWishResult($result);
                             } else if (array_key_exists('wants', $_POST)) {
-                                $result = executePlainSQL("	SELECT DISTINCT g.gid AS gid, g.name AS name
-                                                            FROM		wants w, game g
-                                                            WHERE		w.id = $userData[0] AND g.gid = w.gid");													
+                                $result = executePlainSQL("SELECT DISTINCT g.gid AS gid, g.name AS name, g.price, g.genre, g.ignscore			
+	                                                       FROM			wants w, game g			
+                                                           WHERE			w.id = $userData[0] AND g.gid = w.gid");													
                                 printMWishResult($result);
-                            } else if (array_key_exists('minPop', $_POST)) {
+                            } else if (array_key_exists('deleteWishItem', $_POST)) {	
+	                            $gid = $_POST['id'];			
+	                            $result = executePlainSQL(" DELETE			
+	                                                       FROM        Wants			
+	                                                       WHERE       gid = $gid AND id = $userData[0]");  			
+	                            $result = executePlainSQL("SELECT DISTINCT g.gid AS gid, g.name AS name, g.price, g.genre, g.ignscore			
+	                                                       FROM			wants w, game g			
+                                                           WHERE			w.id = $userData[0] AND g.gid = w.gid");
+	                            printMWishResult($result);			
+								
+							} else if (array_key_exists('minPop', $_POST)) {
                                 $result = executePlainSQL("	SELECT 		MIN (ranking) AS minratedgame
                                                             FROM 		(	SELECT 	AVG(prank) AS ranking
                                                                         FROM	ranks r
