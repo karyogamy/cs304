@@ -3,6 +3,6 @@ for formal specification. The differences comes from bug fixes
 of our original schema, such as typo and ordering. We also
 accidentally had aid(achievement id) and gid(game id) together 
 as the primary key for has_achievement when we should only have 
-aid as the primary key.
+aid as the primary key. We also added in some NOT NULL constraints
 
 Otherwise the schema is the same.
