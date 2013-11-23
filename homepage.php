@@ -310,6 +310,7 @@ include 'globalfunc.php';
                                 $result = executePlainSQL(" DELETE
                                                             FROM        buys_game
                                                             WHERE       gid = $gid ");  
+                                oci_commit($db_conn);
                                 $result = executePlainSQL(" SELECT g.name, g.gid, g.genre, g.ignscore
                                                             FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
                                                             WHERE       bg.id = $userData[0]");                                                    
@@ -374,11 +375,13 @@ include 'globalfunc.php';
                                                                 WHERE id = $userData[0]");
                                     if (!($result1 === false)) {
                                         $result2 = executePlainSQL("INSERT INTO buys_game VALUES ($userData[0], $id)");
+                                        oci_commit($db_conn);
                                         if ($result2 === false) {
                                             echo "Purchase failed, returning your money";
                                             executePlainSQL("	UPDATE player
                                                                 SET balance = balance + $idRow[0]
                                                                 WHERE id = $userData[0]"); 
+                                            oci_commit($db_conn);
                                         } else {
                                             echo "Purchase successful.";
 
@@ -387,7 +390,27 @@ include 'globalfunc.php';
                                                             FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
                                                             WHERE       bg.id = $userData[0]");                                                    
                                             printLibResult($result);
-                                        }
+
+
+                                            /*test code for test code
+                                            $result = executePlainSQL(" SELECT *
+                                                            FROM        buys_game bg
+                                                            WHERE       bg.id = $userData[0]");                                                    
+                                                            echo "<br>Buys_Game:<br>";
+                                                            echo '<table class="table">';
+                                                            echo "<tr>
+                                                                    <th>ID</th>
+                                                                    <th>GID</th>
+                                                                </tr>";
+
+                                                            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                                                                echo "<tr>
+                                                                <td>" . $row[0] . "</td>
+                                                                <td>" . $row[1] . "</td>
+                                                                </tr>"; //or just use "echo $row[0]" 
+                                                            }
+                                                            echo "</table>";
+                                        }*/
                                     }	
                                 } else {
                                     echo "game not found";
