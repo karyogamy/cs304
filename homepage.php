@@ -82,6 +82,7 @@ include 'globalfunc.php';
                             <th>Genre</th>
                             <th>IGNScore</th>
                             <th></th>
+                            <th></th>
                             </tr>";
 
                     while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -90,6 +91,9 @@ include 'globalfunc.php';
                         <td>" . $row[0] . "</td>
                         <td>" . $row[4] . "</td>
                         <td>" . $row[5] . "</td>
+                        <td><form action='homepage.php' method='post'>
+                        <input type='hidden' name='id' value='" . $row[2] . "'>
+                        <input type='submit' class='btn btn-default' name='addWantItem' value='Want'></form></td>
                         <td><form action='homepage.php' method='post'>
                         <input type='hidden' name='id' value='" . $row[2] . "'>
                         <input type='submit' class='btn btn-default' name='buyGame' value='Buy'></form></td>
@@ -364,11 +368,21 @@ include 'globalfunc.php';
 	                                                       FROM			wants w, game g			
                                                            WHERE			w.id = $userData[0] AND g.gid = w.gid");													
                                 printMWishResult($result);
+                            } else if (array_key_exists('addWantItem', $_POST)) {    
+                                $gid = $_POST['id'];            
+                                $result = executePlainSQL(" INSERT INTO wants VALUES ($userData[0], $gid)");      
+                                oci_commit($db_conn);       
+                                $result = executePlainSQL("SELECT DISTINCT g.gid AS gid, g.name AS name, g.price, g.genre, g.ignscore           
+                                                           FROM         wants w, game g         
+                                                           WHERE            w.id = $userData[0] AND g.gid = w.gid");
+                                printMWishResult($result);          
+                                
                             } else if (array_key_exists('deleteWishItem', $_POST)) {	
 	                            $gid = $_POST['id'];			
 	                            $result = executePlainSQL(" DELETE			
 	                                                       FROM        Wants			
-	                                                       WHERE       gid = $gid AND id = $userData[0]");  			
+	                                                       WHERE       gid = $gid AND id = $userData[0]");  	
+                                oci_commit($db_conn);		
 	                            $result = executePlainSQL("SELECT DISTINCT g.gid AS gid, g.name AS name, g.price, g.genre, g.ignscore			
 	                                                       FROM			wants w, game g			
                                                            WHERE			w.id = $userData[0] AND g.gid = w.gid");
@@ -430,8 +444,8 @@ include 'globalfunc.php';
                                                                 <td>" . $row[1] . "</td>
                                                                 </tr>"; //or just use "echo $row[0]" 
                                                             }
-                                                            echo "</table>";
-                                        }*/
+                                                            echo "</table>";*/
+                                        }
                                     }	
                                 } else {
                                     echo "game not found";
