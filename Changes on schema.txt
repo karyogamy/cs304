@@ -1,3 +1,6 @@
+Changes on Schema
+- Author: Steamly Steamy Steamers
+
 Our final schema is basically the same as the one we handed in 
 for formal specification. The differences comes from bug fixes 
 of our original schema, such as typo and ordering. We also

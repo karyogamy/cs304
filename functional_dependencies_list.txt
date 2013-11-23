@@ -1,4 +1,5 @@
 List of Functional Dependencies
+- Author: Steamly Steamy Steamers
 
 -- Player(ID,name,password,joindate,email,balance,bday,gamept)
 ID -> name, password, joindate, email, balance, bday, gamept
