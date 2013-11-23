@@ -1,6 +1,5 @@
 <?php
-session_save_path('./savepath/');
-session_start();
+require_once("config.php");
 ?>
 
 <html lang="en">
@@ -73,9 +72,6 @@ session_start();
                 <p class="well">
                 <?php
 
-                $success = True; //keep track of errors so it redirects the page only if there are no errors
-                $db_conn = OCILogon("ora_y5q8", "a10733129", "ug");
-
                 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
                     //echo "<br>running ".$cmdstr."<br>";
                     global $db_conn, $success;
@@ -112,6 +108,7 @@ session_start();
                             <th>Price</th>
                             <th>Genre</th>
                             <th>IGNScore</th>
+                            <th></th>
                             </tr>";
 
                     while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -120,6 +117,9 @@ session_start();
                         <td>" . $row[1] . "</td>
                         <td>" . $row[5] . "</td>
                         <td>" . $row[6] . "</td>
+                        <td><form action='homepage.php' method='post'>
+                        <input type='hidden' name='buyGameid' value='" . $row[3] . "'>
+                        <input type='submit' class='btn btn-default' name='buyGame' value='Buy'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
                     echo "</table>";
@@ -416,23 +416,12 @@ session_start();
                 </div>
             </div>
 			<div class="row">
-               <h3>BUY GAME</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						GAME ID: <input type="text" placeholder="STRING" name="id"><br>
-						<input type="submit" class="btn btn-default" name="buyGame">
-					</form>
-                </div>
-            </div>
-			<div class="row">
                <h3>RANK GAMES</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="rank">
+						<input type="submit" class="btn btn-default" name="rank" value="Display">
 					</form>
                 </div>
             </div>
@@ -442,7 +431,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="achi">
+						<input type="submit" class="btn btn-default" name="achi" value="Display">
 					</form>
                 </div>
             </div>
@@ -452,7 +441,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="transRec">
+						<input type="submit" class="btn btn-default" name="transRec" value="Display">
 					</form>
                 </div>
             </div>
@@ -462,7 +451,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="friends">
+						<input type="submit" class="btn btn-default" name="friends" value="Display">
 					</form>
                 </div>
             </div>
@@ -472,7 +461,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="friendswants">
+						<input type="submit" class="btn btn-default" name="friendswants" value="Display">
 					</form>
                 </div>
             </div>
@@ -482,7 +471,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="wants">
+						<input type="submit" class="btn btn-default" name="wants" value="Display">
 					</form>
                 </div>
             </div>
@@ -492,7 +481,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="mostPop">
+						<input type="submit" class="btn btn-default" name="mostPop" value="Display">
 					</form>
                 </div>
             </div>
@@ -502,7 +491,7 @@ session_start();
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="saves">
+						<input type="submit" class="btn btn-default" name="saves" value="Display">
 					</form>
                 </div>
             </div>
