@@ -1,6 +1,5 @@
 <?php
-session_save_path('./savepath/');
-session_start();
+require_once("config.php");
 ?>
 
 <html lang="en">
@@ -99,9 +98,6 @@ session_start();
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
-
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_y5q8", "a10733129", "ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
