@@ -28,9 +28,9 @@ drop table COMPANY;
 -- Simplified schema
 -- Player(ID,name,password,joindate,email,balance,bday,gamept)
 -- Company(ID,name,password,joindate,email)
--- Game(hours_played,price,name,gid,id,genre,ignscore)
+-- Game(hours_played,price,name,GID,id,genre,ignscore)
 -- Giftcard(buyer_id, rid, CID, amount, expiry, redeem_date)
--- Has_Achievement (AID,points,name,gid)
+-- Has_Achievement(AID,points,name,gid)
 -- Earns(ID,AID,date_earned)
 -- Redeem(CID,ID)
 -- Buys_Game(ID,GID)
@@ -38,29 +38,29 @@ drop table COMPANY;
 -- Friends(ID1,ID2)
 -- Wants(ID,GID)
 -- Ranks(ID,GID,prank)
--- Favorites (ID,GID)
+-- Favorites(ID,GID)
 
 -- create all the tables
 
 CREATE TABLE Player (
     id              INTEGER,
-    name            CHAR(20),
-    password        CHAR(20),
-    joindate        DATE,  
-    email           VARCHAR(30),
-    balance         INTEGER,
-    bday            DATE, 
-    gamept          INTEGER,
+    name            CHAR(20) NOT NULL,
+    password        CHAR(20) NOT NULL,
+    joindate        DATE     NOT NULL,  
+    email           VARCHAR(30) NOT NULL,
+    balance         INTEGER NOT NULL,
+    bday            DATE NOT NULL, 
+    gamept          INTEGER NOT NULL,
     PRIMARY KEY (id),
     unique          (name),
     unique          (email));
                                                              
 CREATE TABLE Company (
     id              INTEGER,
-    name            CHAR(20),
-    password        CHAR(20),
-    joindate        DATE,  
-    email           CHAR(40),
+    name            CHAR(20) NOT NULL,
+    password        CHAR(20) NOT NULL,
+    joindate        DATE NOT NULL,  
+    email           CHAR(40) NOT NULL,
     PRIMARY KEY (id),
     unique          (name),
     unique          (email));
@@ -68,9 +68,9 @@ CREATE TABLE Company (
 CREATE TABLE Game (
     Hours_played    INTEGER,
     Price           INTEGER,
-    Name            VARCHAR(50),
+    Name            VARCHAR(50) NOT NULL,
     gid             INTEGER,
-    id              INTEGER,
+    id              INTEGER NOT NULL,
     genre           CHAR(20),
     ignscore        INTEGER,
     PRIMARY KEY     (gid),
@@ -90,8 +90,8 @@ CREATE TABLE Giftcard (
 CREATE TABLE Has_Achievement (
     aid             INTEGER,
     points          INTEGER,
-    name            VARCHAR(20),
-    gid             INTEGER,
+    name            VARCHAR(20) NOT NULL,
+    gid             INTEGER NOT NULL,
     PRIMARY KEY (aid),
     FOREIGN KEY (gid) REFERENCES Game ON DELETE cascade);
 
@@ -174,7 +174,7 @@ insert into company values (10, 'eafeaf', 'aaaaa', '00-01-01', 'dodododo');
 insert into company values (1000, 'Black Mesa', 'pwned', '00-01-31', 'aliens@dot.com');
 insert into company values (63, 'Aperture', 'Science', '14-01-01', 'Enrichment@Center.portal');
 
--- Game(hours_played,price,name,gid,id,genre,ignscore)
+-- Game(hours_played,price,name,GID,id,genre,ignscore)
 insert into game values (5,   10, 'SuperMaria', 2, 0,    'Adv',         3);
 insert into game values (500, 15, 'LaL',        4, 1,    'Strategy',    4);
 insert into game values (50,  12, 'Just Dive',  3, 10,   'Sport',       3);
@@ -195,7 +195,7 @@ insert into giftcard values (1,100, 2, 0, '11-11-11', null);
 insert into giftcard values (2, 4, 5, 999999, '12-12-21', null);
 insert into giftcard values (100, 0, 122, 53143151, '30-12-31', null);
 
--- Has_Achievement (AID,points,name,gid)
+-- Has_Achievement(AID,points,name,gid)
 insert into has_achievement values (0, 10000, 'take your money', 5);
 insert into has_achievement values (100, 9, 'shroom stomper', 2);
 insert into has_achievement values (9999, 9999999, 'm-m-m-m-monster kill', 4);
@@ -263,7 +263,7 @@ insert into ranks values (1, 3, 4);
 insert into ranks values (1, 10, 7);   
 insert into ranks values (0, 7, 3)
 
--- Favorites (ID,GID)
+-- Favorites(ID,GID)
 insert into favorite values (0, 3);
 insert into favorite values (1, 4);
 insert into favorite values (2, 6);

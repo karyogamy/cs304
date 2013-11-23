@@ -1,15 +1,60 @@
+List of Functional Dependencies
+
 -- Player(ID,name,password,joindate,email,balance,bday,gamept)
 ID -> name, password, joindate, email, balance, bday, gamept
+- ID determine everything about a game
+name -> ID
+- a name correspond to a single id
+email -> ID
+- an email correspond to a single id
 
 -- Company(ID,name,password,joindate,email)
--- Game(hours_played,price,name,gid,id,genre,ignscore)
+ID -> name, password, joindate, email
+- ID determine everything about a company
+email -> ID
+- a name correspond to a single id
+name -> ID
+- an email correspond to a single id
+
+-- Game(hours_played,price,name,GID,id,genre,ignscore) (id is the id of company)
+GID -> hours_played, price, name, id, genre, ignscore
+- GID determines everything about a game
+name,id -> GID (ideal but not implimented)
+- A company cannot make two games having the same name
+
 -- Giftcard(buyer_id, rid, CID, amount, expiry, redeem_date)
--- Has_Achievement (AID,points,name,gid)
+CID -> buyer_id, rid, amount, expiry, redeem_date
+- CID determines everything about a giftcard
+
+-- Has_Achievement(AID,points,name,gid)
+AID -> points, name, gid
+- AID determines everything about a Has_Achievement relationship
+name, gid -> AID (ideal but not implimented)
+- A game cannot contain two achievement with the same name
+
 -- Earns(ID,AID,date_earned)
+ID, AID -> date_earned
+- If we know the player and the achievement earned, we know when it's earned
+
 -- Redeem(CID,ID)
+None
+
 -- Buys_Game(ID,GID)
+None
+
 -- Save_Store(ID,GID,SID,state)
+ID,GID,SID -> state
+- The player, the game, and the index of the store, determine the state of store
+
 -- Friends(ID1,ID2)
+None 
+
 -- Wants(ID,GID)
+None
+
 -- Ranks(ID,GID,prank)
+ID, GID -> prank
+a player can only rank a game once
+
 -- Favorites (ID,GID)
+None
