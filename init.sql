@@ -28,7 +28,7 @@ drop table COMPANY;
 -- Simplified schema
 -- Player(ID,name,password,joindate,email,balance,bday,gamept)
 -- Company(ID,name,password,joindate,email)
--- Game(hours_played,price,name,GID,id,genre,ignscore)
+-- Game(price,name,GID,id,genre,ignscore)
 -- Giftcard(buyer_id, rid, CID, amount, expiry, redeem_date)
 -- Has_Achievement(AID,points,name,gid)
 -- Earns(ID,AID,date_earned)
@@ -66,7 +66,6 @@ CREATE TABLE Company (
     unique          (email));
 
 CREATE TABLE Game (
-    Hours_played    INTEGER,
     Price           INTEGER,
     Name            VARCHAR(50) NOT NULL,
     gid             INTEGER,
@@ -174,19 +173,19 @@ insert into company values (10, 'eafeaf', 'aaaaa', '00-01-01', 'dodododo');
 insert into company values (1000, 'Black Mesa', 'pwned', '00-01-31', 'aliens@dot.com');
 insert into company values (63, 'Aperture', 'Science', '14-01-01', 'Enrichment@Center.portal');
 
--- Game(hours_played,price,name,GID,id,genre,ignscore)
-insert into game values (5,   10, 'SuperMaria', 2, 0,    'Adv',         3);
-insert into game values (500, 15, 'LaL',        4, 1,    'Strategy',    4);
-insert into game values (50,  12, 'Just Dive',  3, 10,   'Sport',       3);
-insert into game values (3,   19, 'Dinopoly',   6, 1000, 'Strategy',    3);
-insert into game values (8,   30, 'Scribble',   5, 63,   'Puz',         8);
-insert into game values (100, 39, 'MineCreep',  1, 10,   'Adv',        10);
-insert into game values (9,   1,  'CandyClush', 7, 0,    'Puz',         7);
-insert into game values (10,  3,  'Go',         8, 0,    'Puz',         1);
-insert into game values (23,  3,  'Checker',    9, 1,    'Puz',         2);
-insert into game values (13,  1,  'Jenga',     10, 0,    'Puz',         6);
-insert into game values (12,  3,  'Crossword', 11, 0,    'Puz',         8);
-insert into game values (12,  3,  'Sudoku',    12, 1,    'Puz',         7);
+-- Game(price,name,GID,id,genre,ignscore)
+insert into game values (10, 'SuperMaria', 2, 0,    'Adv',         3);
+insert into game values (15, 'LaL',        4, 1,    'Strategy',    4);
+insert into game values (12, 'Just Dive',  3, 10,   'Sport',       3);
+insert into game values (19, 'Dinopoly',   6, 1000, 'Strategy',    3);
+insert into game values (30, 'Scribble',   5, 63,   'Puz',         8);
+insert into game values (39, 'MineCreep',  1, 10,   'Adv',        10);
+insert into game values (1,  'CandyClush', 7, 0,    'Puz',         7);
+insert into game values (3,  'Go',         8, 0,    'Puz',         1);
+insert into game values (3,  'Checker',    9, 1,    'Puz',         2);
+insert into game values (1,  'Jenga',     10, 0,    'Puz',         6);
+insert into game values (3,  'Crossword', 11, 0,    'Puz',         8);
+insert into game values (3,  'Sudoku',    12, 1,    'Puz',         7);
 
 -- Giftcard(buyer_id, rid, CID, amount, expiry, redeem_date)
 insert into giftcard values (0, 0, 0, 10000, '00-01-01', null);
