@@ -1,0 +1,15 @@
+-- Player(ID,name,password,joindate,email,balance,bday,gamept)
+ID -> name, password, joindate, email, balance, bday, gamept
+
+-- Company(ID,name,password,joindate,email)
+-- Game(hours_played,price,name,gid,id,genre,ignscore)
+-- Giftcard(buyer_id, rid, CID, amount, expiry, redeem_date)
+-- Has_Achievement (AID,points,name,gid)
+-- Earns(ID,AID,date_earned)
+-- Redeem(CID,ID)
+-- Buys_Game(ID,GID)
+-- Save_Store(ID,GID,SID,state)
+-- Friends(ID1,ID2)
+-- Wants(ID,GID)
+-- Ranks(ID,GID,prank)
+-- Favorites (ID,GID)

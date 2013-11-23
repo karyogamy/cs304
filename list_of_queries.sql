@@ -1,3 +1,6 @@
+-- List Of queries
+-- Author: Steamly Steamy Steamers
+
 -- basic select
 
 select * from player;
