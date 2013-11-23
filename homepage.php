@@ -86,12 +86,12 @@ include 'globalfunc.php';
 
                     while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                         echo "<tr>
-                        <td>" . $row[2] . "</td>
                         <td>" . $row[1] . "</td>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[4] . "</td>
                         <td>" . $row[5] . "</td>
-                        <td>" . $row[6] . "</td>
                         <td><form action='homepage.php' method='post'>
-                        <input type='hidden' name='id' value='" . $row[3] . "'>
+                        <input type='hidden' name='id' value='" . $row[2] . "'>
                         <input type='submit' class='btn btn-default' name='buyGame' value='Buy'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
@@ -239,20 +239,18 @@ include 'globalfunc.php';
                             <th>Title</th>
                             <th>ID</th>
                             <th>Genre</th>
-                            <th>Hours_played</th>
                             <th>ignscore</th>
                             <th></th>
                         </tr>";
 
                     while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                         echo "<tr>
+                        <td>" . $row[0] . "</td>
                         <td>" . $row[1] . "</td>
                         <td>" . $row[2] . "</td>
                         <td>" . $row[3] . "</td>
-                        <td>" . $row[0] . "</td>
-                        <td>" . $row[4] . "</td>
                         <td><form action='homepage.php' method='post'>
-                        <input type='hidden' name='id' value='" . $row[2] . "'>
+                        <input type='hidden' name='id' value='" . $row[1] . "'>
                         <input type='submit' class='btn btn-default' name='delete' value='Delete'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
@@ -312,12 +310,12 @@ include 'globalfunc.php';
                                 $result = executePlainSQL(" DELETE
                                                             FROM        buys_game
                                                             WHERE       gid = $gid ");  
-                                $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                $result = executePlainSQL(" SELECT g.name, g.gid, g.genre, g.ignscore
                                                             FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
                                                             WHERE       bg.id = $userData[0]");                                                    
                                 printLibResult($result);
                             } else if (array_key_exists('game_lib', $_POST)) {
-                                $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                $result = executePlainSQL(" SELECT g.name, g.gid, g.genre, g.ignscore
                                                             FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
                                                             WHERE       bg.id = $userData[0]");                                                    
                                 printLibResult($result);
@@ -385,7 +383,7 @@ include 'globalfunc.php';
                                             echo "Purchase successful.";
 
                                             // test code for checking the insertion
-                                            $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                            $result = executePlainSQL(" SELECT g.name, g.gid, g.genre, g.ignscore
                                                             FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
                                                             WHERE       bg.id = $userData[0]");                                                    
                                             printLibResult($result);
