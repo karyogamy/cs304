@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+include 'globalfunc.php';
 ?>
 
 <html lang="en">
@@ -72,34 +73,6 @@ require_once("config.php");
                 <p class="well">
                 <?php
 
-                function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
-                    //echo "<br>running ".$cmdstr."<br>";
-                    global $db_conn, $success;
-                    $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
-
-                    if (!$statement) {
-                        echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-                        $e = OCI_Error($db_conn); // For OCIParse errors pass the       
-                        // connection handle
-                        echo htmlentities($e['message']);
-                        $success = False;
-                    }
-
-                    $r = OCIExecute($statement, OCI_DEFAULT);
-                    if (!$r) {
-                        echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-                        $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-                        echo htmlentities($e['message']);
-                        $success = False;
-                        return false;
-                    } else {
-
-                    }
-                    return $statement;
-
-                }
-
-
                 function printGameResult($result) { //prints results from a select statement
                     echo "<br>GAME FILTERED:<br>";
                     echo '<table class="table">';
@@ -118,7 +91,7 @@ require_once("config.php");
                         <td>" . $row[5] . "</td>
                         <td>" . $row[6] . "</td>
                         <td><form action='homepage.php' method='post'>
-                        <input type='hidden' name='buyGameid' value='" . $row[3] . "'>
+                        <input type='hidden' name='id' value='" . $row[3] . "'>
                         <input type='submit' class='btn btn-default' name='buyGame' value='Buy'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
@@ -256,6 +229,34 @@ require_once("config.php");
                         <td>" . $row[0] . "</td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
+                    echo "</table>";
+                }
+
+                function printLibResult($result) {
+                    echo "<br>My Game Library:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Title</th>
+                            <th>ID</th>
+                            <th>Genre</th>
+                            <th>Hours_played</th>
+                            <th>ignscore</th>
+                            <th></th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[2] . "</td>
+                        <td>" . $row[3] . "</td>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[4] . "</td>
+                        <td><form action='homepage.php' method='post'>
+                        <input type='hidden' name='id' value='" . $row[2] . "'>
+                        <input type='submit' class='btn btn-default' name='delete' value='Delete'></form></td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
                 }
 
                 if ($db_conn) {
@@ -306,6 +307,20 @@ require_once("config.php");
                                                             WHERE		g.gid = ga.gid
                                                             ORDER BY	ga.arank DESC");													
                                 printRankResult($result);
+                            } else if (array_key_exists('delete', $_POST)) {
+                                $gid = $_POST['id'];
+                                $result = executePlainSQL(" DELETE
+                                                            FROM        buys_game
+                                                            WHERE       gid = $gid ");  
+                                $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                                            FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
+                                                            WHERE       bg.id = $userData[0]");                                                    
+                                printLibResult($result);
+                            } else if (array_key_exists('game_lib', $_POST)) {
+                                $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                                            FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
+                                                            WHERE       bg.id = $userData[0]");                                                    
+                                printLibResult($result);
                             } else if (array_key_exists('achi', $_POST)) {
                                 $result = executePlainSQL("	SELECT DISTINCT	e.aid, h.name, h.points, g.name
                                                             FROM		Has_Achievement h, Earns e, Game g
@@ -411,7 +426,7 @@ require_once("config.php");
 							<td><input type="text" placeholder="TO (INCLUSIVE)" name="priToIncl"></td>
 						  </tr>
 						</table>
-						<input type="submit" class="btn btn-default" name="filter">
+						<input type="submit" class="btn btn-default" name="filter" value="Search">
 					</form>
                 </div>
             </div>
@@ -423,6 +438,16 @@ require_once("config.php");
 					<form action="homepage.php" method="post">
 						<input type="submit" class="btn btn-default" name="rank" value="Display">
 					</form>
+                </div>
+            </div>
+            <div class="row">
+            <h3>MY GAME LIBRARY</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <form action="homepage.php" method="post">
+                        <input type="submit" class="btn btn-default" name="game_lib" value="Display">
+                    </form>
                 </div>
             </div>
 			<div class="row">
