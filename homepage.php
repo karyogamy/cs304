@@ -383,6 +383,12 @@ include 'globalfunc.php';
                                                                 WHERE id = $userData[0]"); 
                                         } else {
                                             echo "Purchase successful.";
+
+                                            // test code for checking the insertion
+                                            $result = executePlainSQL(" SELECT g.Hours_played, g.name, g.gid, g.genre, g.ignscore
+                                                            FROM        buys_game bg INNER JOIN game g ON g.gid = bg.gid
+                                                            WHERE       bg.id = $userData[0]");                                                    
+                                            printLibResult($result);
                                         }
                                     }	
                                 } else {
