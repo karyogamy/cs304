@@ -60,7 +60,7 @@ include 'globalfunc.php';
         </nav>
         <div class="container">
             <div class="row">
-               <h1>cs304</h1>
+               <h1>Steamly Steamy Steamers</h1>
             </div>
             <div id="result">
                 <h3> Results: </h3>

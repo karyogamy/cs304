@@ -60,10 +60,7 @@ include 'globalfunc.php';
         </nav>
         <div class="container">
             <div class="row">
-               <h1>cs304</h1>
-            </div>
-			<div class="row">
-               <h2>FILTER</h2>
+               <h1>Steamly Steamy Steamers</h1>
             </div>
             <div id="result">
                 <h3>Result: </h3>
@@ -171,8 +168,12 @@ include 'globalfunc.php';
                                     $result = executePlainSQL("	DELETE
 																FROM company
 																WHERE id = $id");
-									OCI_COMMIT($db_conn);
-									session_unset();
+									if (OCI_Error() == NULL) {
+										OCI_COMMIT($db_conn);
+										session_unset();
+										echo "Account successfully wiped, redirecting in 2 secs";
+										header("Refresh: 2; url=index.php");
+									}
                                 }
                             } else {
                                 echo "How did you get here, you petty user. Go back to your homepage.";
