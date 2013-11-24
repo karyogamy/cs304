@@ -52,6 +52,7 @@ CREATE TABLE Player (
     bday            DATE NOT NULL, 
     gamept          INTEGER NOT NULL,
     PRIMARY KEY (id),
+    CHECK (balance >= 0),
     unique          (name),
     unique          (email));
                                                              
