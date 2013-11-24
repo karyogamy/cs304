@@ -166,8 +166,6 @@ include 'globalfunc.php';
 																WHERE id = $id");
 									OCI_COMMIT($db_conn);
 									session_unset();
-									echo "you have not logged in, redirecting in 2 secs";
-									header("Refresh: 0; url=index.php");
                                 }
                             } else {
                                 echo "How did you get here, you petty user. Go back to your homepage.";
