@@ -97,22 +97,20 @@ include 'globalfunc.php';
                         echo "</table>";
                     }
 
-                    function printOwnerResult($result) { //prints results from a select statement
-                        echo "<br>Users:<br>";
-                        echo '<table class="table">';
-                        echo "<tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                            </tr>";
+					function printNameResult($result) { //prints results from a select statement
+						echo "<br>Players who have bought all of our games:<br>";
+						echo '<table class="table">';
+						echo "<tr>
+								<th>Player name</th>
+							</tr>";
 
-                        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                            echo "<tr>
-                            <td>" . $row[0] . "</td>
-                            <td>" . $row[1] . "</td>
-                            </tr>"; //or just use "echo $row[0]" 
-                        }
-                        echo "</table>";
-                    }
+						while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+							echo "<tr>
+							<td>" . $row[1] . "</td>
+							</tr>"; //or just use "echo $row[0]" 
+						}
+						echo "</table>";
+					}
 				
                     if ($db_conn) {
                         if(isset($_SESSION['CurrentUser'])){
@@ -155,10 +153,22 @@ include 'globalfunc.php';
                                                                 and price <= $priT");													
                                     printGameResult($result);
                                 } else if (array_key_exists('owner', $_POST)) {
-                                    $result = executePlainSQL("	select b.id, p.name
-                                                                from Buys_Game b, Game g, Player p
-                                                                where p.id = b.id and g.gid = b.gid and g.id = $userData[0]");													
-                                    printOwnerResult($result);
+									$id = $userData[0];	
+                                    $result = executePlainSQL("	SELECT p.name
+																FROM player p
+																WHERE p.id IN (
+																				SELECT b.id
+																				FROM Buys_Game b
+																				WHERE b.gid IN ( 
+																							 SELECT g.gid
+																							 FROM Games g 
+																							 WHERE g.id = $id)
+																				GROUP BY b.id
+																				HAVING COUNT(*) = ( 
+																									SELECT COUNT (*)
+																									FROM Games g 
+																									WHERE g.id = $id))");							
+                                    printNameResult($result);
                                 } else if (array_key_exists('selfDestruct', $_POST)) {
 									$id = $userData[0];									
                                     $result = executePlainSQL("	DELETE
@@ -209,17 +219,17 @@ include 'globalfunc.php';
                 </div>
             </div>
 			<div class="row">
-               <h2>ALL PLAYERS WHO OWN OUR GAMES</h2>
+               <h2>MOST LOYAL CUSTOMERS</h2>
             </div>
             <div class="row">
                 <div class="col-md-2">
 					<form action="company.php" method="post">
-						<input type="submit" class="btn btn-default" name="owners">
+						<input type="submit" class="btn btn-default" name="loyals">
 					</form>
                 </div>
             </div>	
 			<div class="row">
-               <h3>DECLARE BANKRUPCY</h3>
+               <h2>DECLARE BANKRUPCY</h2>
             </div>
             <div class="row">
                 <div class="col-md-2">
