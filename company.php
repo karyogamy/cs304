@@ -102,11 +102,19 @@ include 'globalfunc.php';
 						echo '<table class="table">';
 						echo "<tr>
 								<th>Player name</th>
+								<th>Balance</th>
+								<th>Game Point</th>
+								<th>Email</th>
+								<th>Join Date</th>
 							</tr>";
 
 						while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 							echo "<tr>
+							<td>" . $row[0] . "</td>
 							<td>" . $row[1] . "</td>
+							<td>" . $row[2] . "</td>
+							<td>" . $row[3] . "</td>
+							<td>" . $row[4] . "</td>
 							</tr>"; //or just use "echo $row[0]" 
 						}
 						echo "</table>";
@@ -152,22 +160,17 @@ include 'globalfunc.php';
                                                                 and ignscore <= $ratT and price >= $priF 
                                                                 and price <= $priT");													
                                     printGameResult($result);
-                                } else if (array_key_exists('owner', $_POST)) {
+                                } else if (array_key_exists('loyals', $_POST)) {
 									$id = $userData[0];	
-                                    $result = executePlainSQL("	SELECT p.name
-																FROM player p
-																WHERE p.id IN (
-																				SELECT b.id
-																				FROM Buys_Game b
-																				WHERE b.gid IN ( 
-																							 SELECT g.gid
-																							 FROM Games g 
-																							 WHERE g.id = $id)
-																				GROUP BY b.id
-																				HAVING COUNT(*) = ( 
-																									SELECT COUNT (*)
-																									FROM Games g 
-																									WHERE g.id = $id))");							
+                                    $result = executePlainSQL("	SELECT 	p.name, p.balance, p.gamept, p.email, p.joindate
+																FROM	player p
+																WHERE	p.id IN (	SELECT DISTINCT b.id
+																					FROM Buys_Game b
+																					WHERE NOT EXISTS (	SELECT *
+																										FROM  Game g
+																										WHERE g.id = $id and NOT EXISTS (	SELECT *
+																																			FROM Buys_Game b2
+																																			WHERE (b2.id=b.id) AND (b2.gid=g.gid))))");
                                     printNameResult($result);
                                 } else if (array_key_exists('selfDestruct', $_POST)) {
 									$id = $userData[0];									

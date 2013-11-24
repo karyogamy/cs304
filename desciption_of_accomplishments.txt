@@ -9,9 +9,11 @@ filter and search for games, view their actions/history through querying
 (achievement, transaction records, etc.) In addition, they can carry out
 actions such as changing their balance and request statistics from of the
 server. As for companies, they are able to declare bankruptcy, thus deleting
-the games they have (unless under constraints). More importantly, we have 
-also have learned how to integrate HTML, PHP and SQL together to create 
-an interesting web page. While coding the pages, we have also encountered 
-few things that were discussed in class, such as locks and timestamps 
+the games they have (unless under constraints). In addition, companies can 
+check out which player is the most loyal and bought all of the company's 
+games More importantly, we have also have learned how to integrate 
+HTML, PHP and SQL together to create an interesting web page. 
+While coding the pages, we have also encountered few things that 
+were discussed in class, such as locks and timestamps 
 (no deleting when multiple user logs onto the db, and action
 executed right after the lock is lifted/other users logged out).
