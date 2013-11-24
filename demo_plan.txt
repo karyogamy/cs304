@@ -1,0 +1,31 @@
+DEMO PLAN:
+
+1) Using Filter Functionality
+   Let the TA or us search for something
+   and see own info
+
+2) My Game Library uses a querry of this kind
+   It joins Buys_Game with Game
+   Other queries of this type includes MY WISHLIST 
+   and MY FRIENDS, ETC
+
+3) Company with 2 loyal customers: EA 0@a1><~!
+   Company with 1 loyal customers: Fail Fail
+   Company with 0 loyal customers: Bethesda 1
+
+4) RANK GAMES aggregates the average ranking of 
+   different games from players.
+
+5) LOWEST AVE RATING OUT OF ALL GAMES
+
+6) Deletion on company and buy_games
+   Username   Password   Condition
+   NoCascade  NoCascade  Deleted nothing changes on game
+   Fail       Fail       Deletion failed
+   Cascade    Cascade    Deleted and some games also deleted
+
+7) Buy a new game when balance is enough/not
+   No money: Peanut Butter
+   Lots $:   4chan 2chan
+
+8) checked
