@@ -231,6 +231,10 @@ insert into buys_game values (100, 5);
 insert into buys_game values (1, 3);
 insert into buys_game values (1, 10);
 insert into buys_game values (0, 7);
+insert into buys_game values (6, 9);
+insert into buys_game values (6, 12);   
+insert into buys_game values (6, 9);
+insert into buys_game values (6, 12);      
 
 -- Save_Store(ID,GID,SID,state)
 insert into save_store values (0, 3, 1000, '1eaf32cba31acd');
