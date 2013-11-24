@@ -624,12 +624,12 @@ include 'globalfunc.php';
                 </div>
             </div>
 			<div class="row">
-               <h3>LOWEST RATING OF A GAME</h3>
+               <h3>LOWEST AVG RATING OUT OF ALL GAMES</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="mostPop" value="Display">
+						<input type="submit" class="btn btn-default" name="minPop" value="Display">
 					</form>
                 </div>
             </div>
