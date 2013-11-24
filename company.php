@@ -160,20 +160,14 @@ include 'globalfunc.php';
                                                                 where p.id = b.id and g.gid = b.gid and g.id = $userData[0]");													
                                     printOwnerResult($result);
                                 } else if (array_key_exists('selfDestruct', $_POST)) {
-									$id = $userData[0];
-									session_unset();
-									OCI_COMMIT($db_conn);
-									/*
+									$id = $userData[0];									
                                     $result = executePlainSQL("	DELETE
 																FROM company
-																WHERE id = 4");
-																
-									$_SESSION['UserData'] = null;
-									$_SESSION['CurrentUser'] = null;
-									$_SESSION['PrivLevel'] = 0;
+																WHERE id = $id");
+									OCI_COMMIT($db_conn);
+									session_unset();
 									echo "you have not logged in, redirecting in 2 secs";
-									header("Refresh: 0; url=index.php");	
-									*/
+									header("Refresh: 0; url=index.php");
                                 }
                             } else {
                                 echo "How did you get here, you petty user. Go back to your homepage.";
