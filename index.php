@@ -28,7 +28,7 @@ include 'globalfunc.php';
                                     <label for="InputPassword">Password</label>
                                     <input type="password" class="form-control" id="InputPassword" placeholder="Enter Password" name="password" >
                                 </div>
-                                <button type="submit" class="btn btn-default" name="login">Login</button>
+                                <button type="submit" class="btn btn-primary" name="login">Login</button>
                             </form>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ include 'globalfunc.php';
                                 <div class="form-group">
                                     <h3> Do you want to logout?</h3>
                                 </div>
-                                <button type="submit" class="btn btn-default" name="logout">Logout</button>
+                                <button type="submit" class="btn btn-primary" name="logout">Logout</button>
                             </form>
                         </div>
                     </div>
@@ -139,7 +139,6 @@ if ($db_conn) {
 			$_SESSION['UserData'] = $rowPlayer;
 			$_SESSION['PrivLevel'] = 0;
 			
-            echo "Welcome ".$rowPlayer[1]."!!";
             echo '<script type="text/javascript">window.location.reload()</script>';
 			
 		} else if ($rowCompany != NULL){
@@ -147,16 +146,9 @@ if ($db_conn) {
 			$_SESSION['UserData'] = $rowCompany;
 			$_SESSION['PrivLevel'] = 9001;
 			
-            echo "Welcome ".$rowCompany[1]."!!";
-			
-			$result = executePlainSQL("select * from player");
-			printResult($result);
-			
-			$result = executePlainSQL("select * from company");
-			printResult($result);
             echo '<script type="text/javascript">window.location.reload()</script>';
 		} else {
-			echo "Login Failed.";		
+			echo "<div class='alert alert-warning'>Login Failed.</div>";		
 		}
     } else if (array_key_exists('logout', $_POST)) {
         session_destroy();
@@ -164,15 +156,14 @@ if ($db_conn) {
     } else {
 		// Select data...
 		if (isset($_SESSION['CurrentUser'])) {
-			echo "Welcome back " . $_SESSION['CurrentUser'] . ". Privilege level: " . $_SESSION['PrivLevel'];
-			echo " Redirecting to homepage.";
+			echo "<h3>Welcome back " . $_SESSION['CurrentUser'] . ". Privilege level: " . $_SESSION['PrivLevel']. "</h3>";
+			echo " <div class='alert alert-warning'>Redirecting to homepage.</div>";
 			header("Refresh: 1; url=homepage.php");
 		} else {
-			echo "You have not logged in. Something's wrong if you have logged in and still see this page.";
+			echo "<div class='alert alert-warning'>You have not logged in. Something's wrong if you have logged in and still see this page.</div>";
 		}
 		
 
-	//Commit to save changes...
     }
 //	OCILogoff($db_conn);
 } else {

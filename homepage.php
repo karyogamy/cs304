@@ -23,7 +23,7 @@ include 'globalfunc.php';
                                 <div class="form-group">
                                     <h3> Do you want to logout?</h3>
                                 </div>
-                                <button type="submit" class="btn btn-default" name="logout">Logout</button>
+                                <button type="submit" class="btn btn-primary" name="logout">Logout</button>
                             </form>
                         </div>
                     </div>
@@ -43,13 +43,7 @@ include 'globalfunc.php';
             <div class="collapse navbar-collapse" id="#bs-navbar">
                 <ul class="nav navbar-nav">
                     <li> <a href="homepage.php">Homepage</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-							<li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </li>
+                    <li> <a href="#">User Mode</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -75,7 +69,7 @@ include 'globalfunc.php';
 
                 function printGameResult($result) { //prints results from a select statement
                     echo "<br>GAME FILTERED:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                             <th>Price</th>
@@ -93,10 +87,10 @@ include 'globalfunc.php';
                         <td>" . $row[5] . "</td>
                         <td><form action='homepage.php' method='post'>
                         <input type='hidden' name='id' value='" . $row[2] . "'>
-                        <input type='submit' class='btn btn-default' name='addWantItem' value='Want'></form></td>
+                        <input type='submit' class='btn btn-warning' name='addWantItem' value='Want'></form></td>
                         <td><form action='homepage.php' method='post'>
                         <input type='hidden' name='id' value='" . $row[2] . "'>
-                        <input type='submit' class='btn btn-default' name='buyGame' value='Buy'></form></td>
+                        <input type='submit' class='btn btn-success' name='buyGame' value='Buy'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
                     echo "</table>";
@@ -104,7 +98,7 @@ include 'globalfunc.php';
 
                 function printRankResult($result) { //prints results from a select statement
                     echo "<br>GAME RANKINGS:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                             <th>Rank</th>
@@ -121,7 +115,7 @@ include 'globalfunc.php';
 
                 function printAchiResult($result) { //prints results from a select statement
                     echo "<br>MY ACHIEVEMENTS:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                             <th>Points</th>
@@ -140,7 +134,7 @@ include 'globalfunc.php';
 
                 function printRecResult($result) { //prints results from a select statement
                     echo "<br>MY TRANSACTION RECORDS:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Transaction Type</th>
                             <th>Item ID</th>
@@ -161,7 +155,7 @@ include 'globalfunc.php';
 
                 function printFriendResult($result) { //prints results from a select statement
                     echo "<br>FRIENDS:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                         </tr>";
@@ -176,7 +170,7 @@ include 'globalfunc.php';
 
                 function printOWishResult($result) { //prints results from a select statement
                     echo "<br>MY FRIENDS WANTS THESE:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                             <th>Game</th>
@@ -194,7 +188,7 @@ include 'globalfunc.php';
 				
                 function printMWishResult($result) { //prints results from a select statement
                     echo "<br>I WANT THESE:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Game</th>
                             <th>Genre</th>
@@ -211,7 +205,7 @@ include 'globalfunc.php';
                         <td>" . $row[2] . "</td>
                         <td><form action='homepage.php' method='post'>
                         <input type='hidden' name='id' value='" . $row[0] . "'>
-                        <input type='submit' class='btn btn-default' name='deleteWishItem' value='Delete'></form></td>
+                        <input type='submit' class='btn btn-danger' name='deleteWishItem' value='Delete'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
                     echo "</table>";
@@ -219,7 +213,7 @@ include 'globalfunc.php';
 				
                 function printSavesResult($result) { //prints results from a select statement
                     echo "<br>ALL SAVES ON SERVER:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Save ID</th>
                             <th>Save State</th>
@@ -260,7 +254,7 @@ include 'globalfunc.php';
 				
                 function printNameResult($result) { //prints results from a select statement
                     echo "<br>People who has more games than I do:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Player name</th>
                         </tr>";
@@ -275,7 +269,7 @@ include 'globalfunc.php';
 				
                 function printLibResult($result) {
                     echo "<br>My Game Library:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Title</th>
                             <th>ID</th>
@@ -292,7 +286,7 @@ include 'globalfunc.php';
                         <td>" . $row[3] . "</td>
                         <td><form action='homepage.php' method='post'>
                         <input type='hidden' name='id' value='" . $row[1] . "'>
-                        <input type='submit' class='btn btn-default' name='delete' value='Delete'></form></td>
+                        <input type='submit' class='btn btn-danger' name='delete' value='Delete'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
                     echo "</table>";
@@ -300,7 +294,7 @@ include 'globalfunc.php';
 
 				function printBalResult($result) {
                     echo "<br>My Balance:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -317,8 +311,8 @@ include 'globalfunc.php';
                         <td>" . $row[2] . "</td>
                         <td><form action='homepage.php' method='post'>
 						<input type='text' placeholder='INT' name='amount'>
-						<input type='submit' class='btn btn-default' name='addBal' value='Credit'>
-                        <input type='submit' class='btn btn-default' name='subBal' value='Debit'></form></td>
+						<input type='submit' class='btn btn-success' name='addBal' value='Credit'>
+                        <input type='submit' class='btn btn-danger' name='subBal' value='Debit'></form></td>
                         </tr>"; //or just use "echo $row[0]" 
                     }
                     echo "</table>";
@@ -326,7 +320,7 @@ include 'globalfunc.php';
 
                 function printPlayerResult($result, $select) {
                     echo "<br>Player Profile:<br>";
-                    echo '<table class="table">';
+                    echo '<table class="table table-striped">';
                     echo "<tr>
                             <th>Name</th>
                             <th>Email</th>
@@ -566,7 +560,7 @@ include 'globalfunc.php';
                                                             FROM        buys_game bg
                                                             WHERE       bg.id = $userData[0]");                                                    
                                                             echo "<br>Buys_Game:<br>";
-                                                            echo '<table class="table">';
+                                                            echo '<table class="table table-striped">';
                                                             echo "<tr>
                                                                     <th>ID</th>
                                                                     <th>GID</th>
@@ -600,173 +594,166 @@ include 'globalfunc.php';
                 ?>
                 </p>
             </div>
-			<div class="row">
-               <h3>FILTER</h3>
-            </div>
             <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						Name: <input type="text" placeholder="STRING" name="name"><br>
-						Category: <input type="text" placeholder="STRING" name="cat"><br>
-						Ratings:
-						<table>
-						  <tr>
-							<td><input type="text" placeholder="FROM (INCLUSIVE)" name="ratFromIncl"></td>
-							<td><input type="text" placeholder="TO (INCLUSIVE)" name="ratToIncl"></td>
-						  </tr>
-						</table>
-						Price:
-						<table>
-						  <tr>
-							<td><input type="text" placeholder="FROM (INCLUSIVE)" name="priFromIncl"></td>
-							<td><input type="text" placeholder="TO (INCLUSIVE)" name="priToIncl"></td>
-						  </tr>
-						</table>
-						<input type="submit" class="btn btn-default" name="filter" value="Search">
-					</form>
+                <div class="col-md-4">
+                    <h3>SEARCH GAMES WITH FILTER</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <table>
+                                <tr>
+                                    <td>Name:</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" placeholder="STRING" name="name"><br></td>
+                                </tr>
+                                <tr>
+                                    <td>Category:</td> 
+                                </tr>
+                                <tr>
+                                    <td><input type="text" placeholder="STRING" name="cat"><br></td></tr>
+                                <tr>
+                                    <td>Ratings:</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" placeholder="FROM (INCLUSIVE)" name="ratFromIncl"></td>
+                                    <td><input type="text" placeholder="TO (INCLUSIVE)" name="ratToIncl"></td>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" placeholder="FROM (INCLUSIVE)" name="priFromIncl"></td>
+                                    <td><input type="text" placeholder="TO (INCLUSIVE)" name="priToIncl"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="submit" class="btn btn-primary" name="filter" value="Search"></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>GET PLAYER PROFILE</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="radio" name="select" value="0">Simple<br>
+                            <input type="radio" name="select" value="1">Complete<br>
+                            <input type="submit" class="btn btn-primary" name="player" value="Display">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                   <h3>GAME RANKING</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="rank" value="Display">
+                        </form>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-            <h3>PLAYER PROFILE</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <form action="homepage.php" method="post">
-                        <input type="radio" name="select" value="0">Simple<br>
-                        <input type="radio" name="select" value="1">Complete<br>
-                        <input type="submit" class="btn btn-default" name="player" value="Display">
-                    </form>
+                <div class="col-md-4">
+                    <h3>MY GAME LIBRARY</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="game_lib" value="Display">
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-			<div class="row">
-               <h3>RANK GAMES</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="rank" value="Display">
-					</form>
-                </div>
-            </div>
+                <div class="col-md-4">
+                   <h3>VIEW ACHIEVEMENTS</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="achi" value="Display">
+                        </form>
+                    </div>
+                 </div>  
 
-            <div class="row">
-				<h3>MY GAME LIBRARY</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <form action="homepage.php" method="post">
-                        <input type="submit" class="btn btn-default" name="game_lib" value="Display">
-                    </form>
+                <div class="col-md-4">
+                   <h3>TRANSACTION RECORDS</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="transRec" value="Display">
+                        </form>
+                    </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                   <h3>MY FRIENDS</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="friends" value="Display">
+                        </form>
+                    </div>
+                </div>
 
-			<div class="row">
-               <h3>VIEW ACHIEVEMENTS</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="achi" value="Display">
-					</form>
+                <div class="col-md-4">
+                   <h3>MY FRIENDS' WISHLISTS</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="friendswants" value="Display">
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-			<div class="row">
-               <h3>TRANSACTION RECORDS</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="transRec" value="Display">
-					</form>
+                <div class="col-md-4">
+                   <h3>MY BALANCE</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="balance" value="Display">
+                        </form>
+                    </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                   <h3>MY WISHLIST</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="wants" value="Display">
+                        </form>
+                    </div>
+                </div>
 
-			<div class="row">
-               <h3>MY FRIENDS</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="friends" value="Display">
-					</form>
+                <div class="col-md-4">
+                   <h3>LOWEST AVG RATING OUT OF ALL GAMES</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="minPop" value="Display">
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-			<div class="row">
-               <h3>MY FRIENDS' WISHLISTS</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="friendswants" value="Display">
-					</form>
+                <div class="col-md-4">
+                   <h3>HIGHEST AVG RATING OUT OF ALL GAMES</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="maxPop" value="Display">
+                        </form>
+                    </div>
+                </div>            
                 </div>
-            </div>
 
-			<div class="row">
-               <h3>MY BALANCE</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="balance" value="Display">
-					</form>
+                <div class="row">
+                <div class="col-md-4">
+                   <h3>ALL SAVED GAMES</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="saves" value="Display">
+                        </form>
+                    </div>
                 </div>
-            </div>
-
-			<div class="row">
-               <h3>MY WISHLIST</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="wants" value="Display">
-					</form>
-                </div>
-            </div>
-
-			<div class="row">
-               <h3>LOWEST AVG RATING OUT OF ALL GAMES</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="minPop" value="Display">
-					</form>
-                </div>
-            </div>
-
-			<div class="row">
-               <h3>HIGHEST AVG RATING OUT OF ALL GAMES</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="maxPop" value="Display">
-					</form>
-                </div>
-            </div>
-			<div class="row">
-               <h3>ALL SAVED GAMES</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="saves" value="Display">
-					</form>
-                </div>
-            </div>
-			<div class="row">
-               <h3>PLAYERS WITH MORE GAMES THAN I DO</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-					<form action="homepage.php" method="post">
-						<input type="submit" class="btn btn-default" name="moreGames" value="Display">
-					</form>
+                <div class="col-md-4">
+                   <h3>PLAYERS WITH MORE GAMES THAN I DO</h3>
+                    <div class="col-md-4">
+                        <form action="homepage.php" method="post">
+                            <input type="submit" class="btn btn-primary" name="moreGames" value="Display">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

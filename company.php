@@ -23,7 +23,7 @@ include 'globalfunc.php';
                                 <div class="form-group">
                                     <h3> Do you want to logout?</h3>
                                 </div>
-                                <button type="submit" class="btn btn-default" name="logout">Logout</button>
+                                <button type="submit" class="btn btn-primary" name="logout">Logout</button>
                             </form>
                         </div>
                     </div>
@@ -43,13 +43,7 @@ include 'globalfunc.php';
             <div class="collapse navbar-collapse" id="#bs-navbar">
                 <ul class="nav navbar-nav">
                     <li> <a href="company.php">Homepage</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Companies <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-							<li><a href="#">Link</a></li>
-                            <li><a href="#">Link</a></li>
-                        </ul>
-                    </li>
+                    <li> <a href="#">Company Mode</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
@@ -78,7 +72,7 @@ include 'globalfunc.php';
 
                     function printGameResult($result) { //prints results from a select statement
                         echo "<br>Got data from table tab1:<br>";
-                        echo '<table class="table">';
+                        echo '<table class="table table-striped">';
                         echo "<tr>
                                 <th>Name</th>
                                 <th>Price</th>
@@ -99,7 +93,7 @@ include 'globalfunc.php';
 
 					function printNameResult($result) { //prints results from a select statement
 						echo "<br>Players who have bought all of our games:<br>";
-						echo '<table class="table">';
+						echo '<table class="table table-striped">';
 						echo "<tr>
 								<th>Player name</th>
 								<th>Balance</th>
@@ -217,7 +211,7 @@ include 'globalfunc.php';
 							<td><input type="text" placeholder="TO (INCLUSIVE)" name="priToIncl"></td>
 						  </tr>
 						</table>
-						<input type="submit" class="btn btn-default" name="filter">
+						<input type="submit" class="btn btn-primary" name="filter">
 					</form>
                 </div>
             </div>
@@ -227,7 +221,7 @@ include 'globalfunc.php';
             <div class="row">
                 <div class="col-md-2">
 					<form action="company.php" method="post">
-						<input type="submit" class="btn btn-default" name="loyals">
+						<input type="submit" class="btn btn-primary" name="loyals">
 					</form>
                 </div>
             </div>	
@@ -237,7 +231,7 @@ include 'globalfunc.php';
             <div class="row">
                 <div class="col-md-2">
 					<form action="company.php" method="post">
-						<input type="submit" class="btn btn-default" name="selfDestruct" value="Display">
+						<input type="submit" class="btn btn-primary" name="selfDestruct" value="Display">
 					</form>
                 </div>
             </div>			
