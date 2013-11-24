@@ -272,6 +272,32 @@ include 'globalfunc.php';
                     echo "</table>";
                 }
 
+				function printBalResult($result) {
+                    echo "<br>My Balance:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Balance</th>
+                            <th></th>
+							<th></th>
+                            <th></th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[2] . "</td>
+                        <td><form action='homepage.php' method='post'>
+						<input type='text' placeholder='INT' name='amount'>
+						<input type='submit' class='btn btn-default' name='addBal' value='Credit'>
+                        <input type='submit' class='btn btn-default' name='subBal' value='Debit'></form></td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+				
                 if ($db_conn) {
                     if(isset($_SESSION['CurrentUser'])){
                         if ($_SESSION['PrivLevel'] < 9000) {
@@ -368,6 +394,31 @@ include 'globalfunc.php';
 	                                                       FROM			wants w, game g			
                                                            WHERE			w.id = $userData[0] AND g.gid = w.gid");													
                                 printMWishResult($result);
+                            } else if (array_key_exists('balance', $_POST)) {
+                                $result = executePlainSQL("SELECT DISTINCT 	p.id, p.name, p.balance			
+	                                                       FROM				player p			
+                                                           WHERE			p.id = $userData[0]");													
+                                printBalResult($result);
+                            } else if (array_key_exists('addBal', $_POST)) {
+							    $amount = $_POST['amount'];
+								$result = executePlainSQL("	UPDATE player p
+															SET balance = balance + $amount
+															WHERE p.id = $userData[0]");
+								oci_commit($db_conn); 
+                                $result = executePlainSQL("SELECT DISTINCT 	p.id, p.name, p.balance			
+	                                                       FROM				player p			
+                                                           WHERE			p.id = $userData[0]");													
+                                printBalResult($result);
+                            } else if (array_key_exists('subBal', $_POST)) {
+							    $amount = $_POST['amount'];
+								$result = executePlainSQL("	UPDATE player p
+															SET balance = balance - $amount
+															WHERE p.id = $userData[0]");
+								oci_commit($db_conn); 
+                                $result = executePlainSQL("SELECT DISTINCT 	p.id, p.name, p.balance			
+	                                                       FROM				player p			
+                                                           WHERE			p.id = $userData[0]");													
+                                printBalResult($result);
                             } else if (array_key_exists('addWantItem', $_POST)) {    
                                 $gid = $_POST['id'];            
                                 $result = executePlainSQL(" INSERT INTO wants VALUES ($userData[0], $gid)");      
@@ -503,7 +554,7 @@ include 'globalfunc.php';
                 </div>
             </div>
             <div class="row">
-            <h3>MY GAME LIBRARY</h3>
+				<h3>MY GAME LIBRARY</h3>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -549,6 +600,16 @@ include 'globalfunc.php';
                 <div class="col-md-2">
 					<form action="homepage.php" method="post">
 						<input type="submit" class="btn btn-default" name="friendswants" value="Display">
+					</form>
+                </div>
+            </div>
+			<div class="row">
+               <h3>MY BALANCE</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+					<form action="homepage.php" method="post">
+						<input type="submit" class="btn btn-default" name="balance" value="Display">
 					</form>
                 </div>
             </div>
