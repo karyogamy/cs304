@@ -74,7 +74,7 @@ CREATE TABLE Game (
     genre           CHAR(20),
     ignscore        INTEGER,
     PRIMARY KEY     (gid),
-    FOREIGN KEY     (id) REFERENCES Company);
+    FOREIGN KEY     (id) REFERENCES Company ON DELETE cascade);
 
 CREATE TABLE Giftcard (
     buyer_id        INTEGER,
@@ -173,14 +173,17 @@ insert into company values (1, 'EA', '0@a1><~!', '00-01-01', 'whatever');
 insert into company values (10, 'eafeaf', 'aaaaa', '00-01-01', 'dodododo');
 insert into company values (1000, 'Black Mesa', 'pwned', '00-01-31', 'aliens@dot.com');
 insert into company values (63, 'Aperture', 'Science', '14-01-01', 'Enrichment@Center.portal');
+insert into company values (2, 'NoCascade', 'NoCascade', '99-11-11', 'dead@dead.com');
+insert into company values (3, 'Fail', 'Fail', '99-11-11', 'fail@fail.com');
+insert into company values (4, 'Cascade', 'Cascade', '99-11-11', 'cascade@cs.com');
 
 -- Game(price,name,GID,id,genre,ignscore)
 insert into game values (10, 'SuperMaria', 2, 0,    'Adv',         3);
-insert into game values (15, 'LaL',        4, 1,    'Strategy',    4);
+insert into game values (15, 'LaL',        4, 3,    'Strategy',    4);
 insert into game values (12, 'Just Dive',  3, 10,   'Sport',       3);
 insert into game values (19, 'Dinopoly',   6, 1000, 'Strategy',    3);
 insert into game values (30, 'Scribble',   5, 63,   'Puz',         8);
-insert into game values (39, 'MineCreep',  1, 10,   'Adv',        10);
+insert into game values (39, 'MineCreep',  1, 4,   'Adv',         10);
 insert into game values (1,  'CandyClush', 7, 0,    'Puz',         7);
 insert into game values (3,  'Go',         8, 0,    'Puz',         1);
 insert into game values (3,  'Checker',    9, 1,    'Puz',         2);
