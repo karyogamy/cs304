@@ -759,9 +759,6 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
-<<<<<<< HEAD
-
-=======
 			<div class="row">
                <h3>PLAYERS WITH MORE GAMES THAN I DO</h3>
             </div>
@@ -772,7 +769,6 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
->>>>>>> bbae3b4a4f21acaf16db48fb1e700c2d84a943c5
         </div>
     </body>
 </html>
