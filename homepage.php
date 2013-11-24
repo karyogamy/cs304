@@ -297,6 +297,37 @@ include 'globalfunc.php';
                     }
                     echo "</table>";
                 }
+
+                function printPlayerResult($result, $select) {
+                    echo "<br>Player Profile:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Balance</th>";
+                    if ($select == "1"){
+                        echo "  <th>ID</th>
+                                <th>Join Date</th>
+                                <th>Birthday</th>
+                                <th>Game Points</th>";
+                    }
+                    echo "</tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        <td>" . $row[1] . "</td>
+                        <td>" . $row[2] . "</td>";
+                        if ($select == "1"){
+                        echo "  <td>" . $row[3] . "</td>
+                                <td>" . $row[4] . "</td>
+                                <td>" . $row[5] . "</td>
+                                <td>" . $row[6] . "</td>";
+                        }
+                        echo "</tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
 				
                 if ($db_conn) {
                     if(isset($_SESSION['CurrentUser'])){
@@ -451,6 +482,16 @@ include 'globalfunc.php';
                                                             INNER JOIN	save_store s ON s.id = p.id
                                                             INNER JOIN	game g ON g.gid = s.gid");													
                                 printSavesResult($result);
+                            } else if (array_key_exists('player', $_POST)) {
+                                $query = "SELECT name, email, balance";
+                                $select = $_POST['select'];
+                                if ($select == "1"){
+                                    $query .= ", id, joindate, bday, gamept ";
+                                }
+                                $query .= " FROM player p            
+                                            WHERE       p.id = $userData[0]";
+                                $result = executePlainSQL($query);                                                  
+                                printPlayerResult($result, $select);
                             } else if (array_key_exists('buyGame', $_POST)) {
                                 $id = $_POST['id'];
                                 $idRes = executePlainSQL("SELECT * FROM game g WHERE g.gid = $id");
@@ -543,6 +584,20 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
+            <div class="row">
+            <h3>PLAYER PROFILE</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <form action="homepage.php" method="post">
+                        <input type="radio" name="select" value="0">Simple<br>
+                        <input type="radio" name="select" value="1">Complete<br>
+                        <input type="submit" class="btn btn-default" name="player" value="Display">
+                    </form>
+                </div>
+            </div>
+
 			<div class="row">
                <h3>RANK GAMES</h3>
             </div>
@@ -553,6 +608,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
             <div class="row">
 				<h3>MY GAME LIBRARY</h3>
             </div>
@@ -563,6 +619,7 @@ include 'globalfunc.php';
                     </form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>VIEW ACHIEVEMENTS</h3>
             </div>
@@ -573,6 +630,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>TRANSACTION RECORDS</h3>
             </div>
@@ -583,6 +641,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>MY FRIENDS</h3>
             </div>
@@ -593,6 +652,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>MY FRIENDS' WISHLISTS</h3>
             </div>
@@ -603,6 +663,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>MY BALANCE</h3>
             </div>
@@ -613,6 +674,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>MY WISHLIST</h3>
             </div>
@@ -623,6 +685,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>LOWEST AVG RATING OUT OF ALL GAMES</h3>
             </div>
@@ -633,6 +696,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
 			<div class="row">
                <h3>ALL SAVED GAMES</h3>
             </div>
@@ -643,6 +707,7 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+
         </div>
     </body>
 </html>
