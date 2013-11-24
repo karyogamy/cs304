@@ -3,7 +3,9 @@ Description of Project Accomplishments
 Author: Steamly Steamy Steamers
 
 In this project, we simulated the database of a steam-like game site.
-We have two kind of users: company and player.
+We have two kind of users: company and player. Both users are able to 
+log onto their type of account. Players, on their homepage, can
+filter and search for games, 
 
 To be completed
 

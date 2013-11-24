@@ -237,7 +237,7 @@ include 'globalfunc.php';
                 }
 
                 function printLoRatResult($result) { //prints results from a select statement
-                    echo "<br>LO Rating is:<br>";
+                    echo "<br>Lowest Rating is:<br>";
 
                     while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                         echo "<tr>
@@ -247,6 +247,32 @@ include 'globalfunc.php';
                     echo "</table>";
                 }
 
+				function printHiRatResult($result) { //prints results from a select statement
+                    echo "<br>Highest Rating is:<br>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[0] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+				
+                function printNameResult($result) { //prints results from a select statement
+                    echo "<br>People who has more games than I do:<br>";
+                    echo '<table class="table">';
+                    echo "<tr>
+                            <th>Player name</th>
+                        </tr>";
+
+                    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                        echo "<tr>
+                        <td>" . $row[1] . "</td>
+                        </tr>"; //or just use "echo $row[0]" 
+                    }
+                    echo "</table>";
+                }
+				
                 function printLibResult($result) {
                     echo "<br>My Game Library:<br>";
                     echo '<table class="table">';
@@ -475,6 +501,12 @@ include 'globalfunc.php';
                                                             FROM 		(	SELECT 	AVG(prank) AS ranking
                                                                         FROM	ranks r
                                                                         GROUP BY gid)");													
+                                printLoRatResult($result);
+                            } else if (array_key_exists('maxPop', $_POST)) {
+                                $result = executePlainSQL("	SELECT 		MAX (ranking) AS minratedgame
+                                                            FROM 		(	SELECT 	AVG(prank) AS ranking
+                                                                        FROM	ranks r
+                                                                        GROUP BY gid)");													
                                 printHiRatResult($result);
                             } else if (array_key_exists('saves', $_POST)) {
                                 $result = executePlainSQL("	SELECT		p.id, p.name as playername, s.sid as saveid, s.state, g.name as gamename, g.genre
@@ -492,6 +524,16 @@ include 'globalfunc.php';
                                             WHERE       p.id = $userData[0]";
                                 $result = executePlainSQL($query);                                                  
                                 printPlayerResult($result, $select);
+                            } else if (array_key_exists('moreGames', $_POST)) {
+                                $result = executePlainSQL("	SELECT		p.id, p.name
+															FROM		player p
+															WHERE		p.id IN (	SELECT 		b.id
+																			FROM		buys_game b
+																			GROUP BY	b.id
+																			HAVING		count(*) >	(SELECT	count(*)
+																					FROM	buys_game b1
+																					WHERE	b1.id = 0))");													
+                                printNameResult($result);
                             } else if (array_key_exists('buyGame', $_POST)) {
                                 $id = $_POST['id'];
                                 $idRes = executePlainSQL("SELECT * FROM game g WHERE g.gid = $id");
@@ -698,6 +740,16 @@ include 'globalfunc.php';
             </div>
 
 			<div class="row">
+               <h3>HIGHEST AVG RATING OUT OF ALL GAMES</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+					<form action="homepage.php" method="post">
+						<input type="submit" class="btn btn-default" name="maxPop" value="Display">
+					</form>
+                </div>
+            </div>
+			<div class="row">
                <h3>ALL SAVED GAMES</h3>
             </div>
             <div class="row">
@@ -707,7 +759,20 @@ include 'globalfunc.php';
 					</form>
                 </div>
             </div>
+<<<<<<< HEAD
 
+=======
+			<div class="row">
+               <h3>PLAYERS WITH MORE GAMES THAN I DO</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+					<form action="homepage.php" method="post">
+						<input type="submit" class="btn btn-default" name="moreGames" value="Display">
+					</form>
+                </div>
+            </div>
+>>>>>>> bbae3b4a4f21acaf16db48fb1e700c2d84a943c5
         </div>
     </body>
 </html>
