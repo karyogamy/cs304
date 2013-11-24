@@ -147,6 +147,22 @@ INNER JOIN	save_store s ON s.id = p.id
 INNER JOIN	game g ON g.gid = s.gid;
 
 -- FOR DIVISION QUERY
+-- return the loyal customers of a company
+-- loyal customer being the customer who
+-- bought all games produced by a company
+SELECT DISTINCT b.id
+FROM Buys_Game b
+WHERE NOT EXISTS (
+                  SELECT *
+                  FROM  Game g
+                  WHERE g.id = 3 -- 3 is to be replaced
+                         and NOT EXISTS (
+                                     SELECT *
+                                     FROM Buys_Game b2
+                                     WHERE (b2.id=b.id) AND (b2.gid=g.gid)
+                                   )
+                 );
+
 -- All players that has more games than self
 -- require SINGLE PLAYER id
 -- returns LISTOF PLAYER id and names
@@ -159,7 +175,6 @@ WHERE		p.id IN (	SELECT 		b.id
 				HAVING		count(*) >	(SELECT	count(*)
 				 		FROM	buys_game b1
 				 		WHERE	b1.id = 0));
-
 
 -- querry for company
 
