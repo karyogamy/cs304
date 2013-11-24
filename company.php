@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+include 'globalfunc.php';
 ?>
 
 <html lang="en">
@@ -75,33 +76,6 @@ require_once("config.php");
                 <p class="well">
                     <?php
 
-                    function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
-                        //echo "<br>running ".$cmdstr."<br>";
-                        global $db_conn, $success;
-                        $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
-
-                        if (!$statement) {
-                            echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-                            $e = OCI_Error($db_conn); // For OCIParse errors pass the       
-                            // connection handle
-                            echo htmlentities($e['message']);
-                            $success = False;
-                        }
-
-                        $r = OCIExecute($statement, OCI_DEFAULT);
-                        if (!$r) {
-                            echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-                            $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-                            echo htmlentities($e['message']);
-                            $success = False;
-                        } else {
-
-                        }
-                        return $statement;
-
-                    }
-
-
                     function printGameResult($result) { //prints results from a select statement
                         echo "<br>Got data from table tab1:<br>";
                         echo '<table class="table">';
@@ -139,7 +113,7 @@ require_once("config.php");
                         }
                         echo "</table>";
                     }
-
+				
                     if ($db_conn) {
                         if(isset($_SESSION['CurrentUser'])){
                             if ($_SESSION['PrivLevel'] > 9000) {
@@ -185,6 +159,21 @@ require_once("config.php");
                                                                 from Buys_Game b, Game g, Player p
                                                                 where p.id = b.id and g.gid = b.gid and g.id = $userData[0]");													
                                     printOwnerResult($result);
+                                } else if (array_key_exists('selfDestruct', $_POST)) {
+									$id = $userData[0];
+									session_unset();
+									OCI_COMMIT($db_conn);
+									/*
+                                    $result = executePlainSQL("	DELETE
+																FROM company
+																WHERE id = 4");
+																
+									$_SESSION['UserData'] = null;
+									$_SESSION['CurrentUser'] = null;
+									$_SESSION['PrivLevel'] = 0;
+									echo "you have not logged in, redirecting in 2 secs";
+									header("Refresh: 0; url=index.php");	
+									*/
                                 }
                             } else {
                                 echo "How did you get here, you petty user. Go back to your homepage.";
@@ -200,6 +189,9 @@ require_once("config.php");
                     }
                     ?>
                 </p>
+            </div>
+			<div class="row">
+               <h2>FILTER</h2>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -233,7 +225,17 @@ require_once("config.php");
 						<input type="submit" class="btn btn-default" name="owners">
 					</form>
                 </div>
+            </div>	
+			<div class="row">
+               <h3>DECLARE BANKRUPCY</h3>
             </div>
+            <div class="row">
+                <div class="col-md-2">
+					<form action="company.php" method="post">
+						<input type="submit" class="btn btn-default" name="selfDestruct" value="Display">
+					</form>
+                </div>
+            </div>			
         </div>
     </body>
 </html>
